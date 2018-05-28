@@ -28,7 +28,7 @@ module.exports = {
         historyApiFallback: true,
         host: '0.0.0.0',
         hot: true,
-        port: 3000,
+        port: 8000,
         stats,
     },
     devtool: isProd ? false : 'eval',
