@@ -18,7 +18,6 @@ export default (state = initialState, {type, payload}) => {
 
 
       case userListConst.dataLoaded:
-          console.log(payload);
           return {
                 ...state,
                 data: payload.data.list.reduce((prev, item) => ({

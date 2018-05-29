@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {exampleActionListGet, exampleActionSimple} from 'redux/actions/example';
-import {exampleSelectorListGet} from 'redux/selectors/example';
+import {getUserDataListSelector} from 'redux/selectors/user-list';
 import ExampleComponent from 'components/Example/index';
 import {getUserList} from 'redux/actions/user-list';
 
@@ -17,7 +17,7 @@ import {getUserList} from 'redux/actions/user-list';
  */
 function mapStateToProps(state/*, props*/) {
   return {
-    exampleList: exampleSelectorListGet(state),
+    userList: getUserDataListSelector(state),
   };
 }
 
@@ -136,13 +136,16 @@ class UserPageContainer extends Base {
    * Отображение компонента
    */
   render() {
+    const userList = this.props.userList;
     return (
-      <table>
+      <table style={{border:"2px solid black"}}>
         <tbody>
-
-          <tr>
-            <td>Fafas</td>
+        {userList.map((user)=>{
+          return <tr key={user.id}>
+            <td>{user.name}</td>
           </tr>
+        })
+        }
         </tbody>
       </table>
     )

@@ -14,7 +14,6 @@ function getUserList () {
 
     return api.UserList.getList()
       .then ((response) => {
-        console.log(response);
         if (response.errors.length) {
           return dispatch({
               type:userListConst.dataFailed,
