@@ -1,3 +1,4 @@
+import Button from 'components/Button';
 import Base from 'containers/Base/index';
 import React from 'react';
 // import PropTypes from 'prop-types';
@@ -5,10 +6,9 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {exampleActionListGet, exampleActionSimple} from 'redux/actions/example';
-import {getUserList} from 'redux/actions/user-list';
+import {deleteUser} from 'redux/actions/user-list';
 import {getUserDataListSelector} from 'redux/selectors/user-list';
-import ActionColumn from 'containers/ActionColumn/index';
-import style from './style.less';
+import ButtonComponent from 'components/Button/index';
 
 
 /**
@@ -31,11 +31,23 @@ function mapStateToProps(state/*, props*/) {
  */
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        getUserList,
+        deleteUser,
     }, dispatch);
 }
 
-class UserPageContainer extends Base {
+const onClickDelete = () => {
+    const {deleteUser} = this.props;
+    console.log(this.props);
+    return deleteUser(this.props.data.id);
+};
+
+function onClickEdit() {
+    return (
+        console.log("edit")
+    );
+}
+
+class ActionColumn extends Base {
     /**
      * Описание свойств.
      * https://facebook.github.io/react/docs/typechecking-with-proptypes.html
@@ -58,13 +70,6 @@ class UserPageContainer extends Base {
 
     // constructor(props, context, updater) {}
 
-    renderRow = (user) => {
-        return <tr key={user.id}>
-            {this.renderName(user)}
-            {this.renderActionColumn(user)}
-        </tr>;
-    };
-
     /**
      * Инициализация БЭМ-классов компонента.
      *
@@ -84,13 +89,6 @@ class UserPageContainer extends Base {
     }
 
     /**
-     * Компонент будет примонтирован.
-     * В данный момент у нас нет возможности посмотреть DOM элементы.
-     */
-
-    // componentWillMount() {}
-
-    /**
      * Инициализация состояния компонента.
      *
      * @param props - Свойства переданые в компонент.
@@ -100,6 +98,27 @@ class UserPageContainer extends Base {
         this.state = {
             ...this.state,
         };
+    }
+
+    onClickDelete = () => {
+        const {deleteUser} = this.props;
+        return deleteUser(this.props.data.id);
+    };
+
+    /**
+     * Компонент будет примонтирован.
+     * В данный момент у нас нет возможности посмотреть DOM элементы.
+     */
+
+    // componentWillMount() {}
+
+    /**
+     * Компонент примонтировался.
+     * В данный момент у нас есть возможность использовать refs, а следовательно это то самое место, где мы хотели бы указать установку фокуса.
+     * Так же, таймауты, ajax-запросы и взаимодействие с другими библиотеками стоит обрабатывать здесь.
+     */
+    componentDidMount() {
+
     }
 
     /**
@@ -136,35 +155,10 @@ class UserPageContainer extends Base {
      * Отображение компонента
      */
     render() {
-        const userList = this.props.userList;
-        return (
-            <table style={{border: '2px solid black'}}>
-                <tbody>
-                {userList.map(this.renderRow)}
-                </tbody>
-            </table>
-        );
-    }
-
-    /**
-     * Компонент примонтировался.
-     * В данный момент у нас есть возможность использовать refs, а следовательно это то самое место, где мы хотели бы указать установку фокуса.
-     * Так же, таймауты, ajax-запросы и взаимодействие с другими библиотеками стоит обрабатывать здесь.
-     */
-    componentDidMount() {
-        this.props.getUserList();
-    }
-
-    renderName(user) {
-        return (
-            <td>{user.name}</td>
-        );
-    }
-
-    renderActionColumn(user) {
-        return (
-            <td><ActionColumn data={user}/></td>
-        );
+        return <div>
+        <ButtonComponent text="edit" data={this.props.data} onClick={onClickEdit}/>
+        <ButtonComponent text="delete" data={this.props.data} onClick={this.onClickDelete} />
+        </div>
     }
 
     /**
@@ -182,5 +176,4 @@ class UserPageContainer extends Base {
     // componentWillUnmount() {}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserPageContainer));
-
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ActionColumn));

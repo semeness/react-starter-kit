@@ -34,6 +34,12 @@ export default (state = initialState, {type, payload}) => {
                 isLoading: false,
             };
 
+        case userListConst.deletingUser:
+            console.log(state.data);
+            return {...state,
+                data: this.data.filter((item)=>item.id!=payload.id),
+            };
+
         default:
             return state;
     }

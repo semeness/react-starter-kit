@@ -1,7 +1,10 @@
 const userListConst = {
-  dataLoaded: 'User Data Loaded',
-  dataFailed: 'User Data Failed To Load',
-  dataInProcess: 'User Data Loading',
+    dataLoaded: 'User Data Loaded',
+    dataFailed: 'User Data Failed To Load',
+    dataInProcess: 'User Data Loading',
+    deletingUser: 'Deleting Exicting User',
+    creatingUser: 'Creating Exicting User',
+
 };
 
 function exampleActionSimple() {
@@ -34,39 +37,19 @@ function getUserList () {
   }
 }
 
-function exampleActionListGet() {
-  return function(dispatch, getState, {api}) {
-    dispatch({type: exampleConst.getListStart});
-
-    return api.Example.listGet()
-      .then((response) => {
-        if (response.errors.length) {
-          return dispatch({
-            type: exampleConst.getListError,
-            payload: {
-              errors: response.errors,
-            },
-          });
-        }
-
-        return dispatch({
-          type: exampleConst.getListSuccess,
-          payload: {
-            data: response.data,
-          },
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        dispatch({type: exampleConst.getListFail});
-        throw(error);
-      });
-  };
+function deleteUser (id) {
+    return {
+        payload: {
+            id,
+        },
+        type: userListConst.deletingUser,
+    };
 }
+
 
 export {
   userListConst,
   getUserList,
+  deleteUser,
   exampleActionSimple,
-  exampleActionListGet,
 };
