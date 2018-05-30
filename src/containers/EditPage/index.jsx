@@ -1,4 +1,3 @@
-import Button from 'components/Button';
 import Base from 'containers/Base/index';
 import React from 'react';
 // import PropTypes from 'prop-types';
@@ -6,10 +5,8 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {exampleActionListGet, exampleActionSimple} from 'redux/actions/example';
-import {deleteUser,editUser} from 'redux/actions/user-list';
-import {getUserDataListSelector} from 'redux/selectors/user-list';
-import ButtonComponent from 'components/Button/index';
-
+import {exampleSelectorListGet} from 'redux/selectors/example';
+import ExampleComponent from 'components/Example/index';
 
 /**
  * Привязка props к store
@@ -19,7 +16,7 @@ import ButtonComponent from 'components/Button/index';
  */
 function mapStateToProps(state/*, props*/) {
     return {
-        userList: getUserDataListSelector(state),
+        exampleList: exampleSelectorListGet(state),
     };
 }
 
@@ -31,14 +28,12 @@ function mapStateToProps(state/*, props*/) {
  */
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        deleteUser,
-        editUser,
+        exampleActionSimple,
+        exampleActionListGet,
     }, dispatch);
 }
 
-
-
-class ActionColumn extends Base {
+class EditPageContainer extends Base {
     /**
      * Описание свойств.
      * https://facebook.github.io/react/docs/typechecking-with-proptypes.html
@@ -91,16 +86,6 @@ class ActionColumn extends Base {
         };
     }
 
-    onClickDelete = () => {
-        alert("Are You Sure?");
-        const {deleteUser} = this.props;
-        return deleteUser(this.props.data.id);
-    };
-
-    onClickEdit = () => {
-        this.props.history.push('/user-page/'+this.props.data.id+"/edit")
-    };
-
     /**
      * Компонент будет примонтирован.
      * В данный момент у нас нет возможности посмотреть DOM элементы.
@@ -114,7 +99,7 @@ class ActionColumn extends Base {
      * Так же, таймауты, ajax-запросы и взаимодействие с другими библиотеками стоит обрабатывать здесь.
      */
     componentDidMount() {
-
+        this.props.exampleActionListGet();
     }
 
     /**
@@ -151,10 +136,7 @@ class ActionColumn extends Base {
      * Отображение компонента
      */
     render() {
-        return <div>
-        <ButtonComponent text="edit" data={this.props.data} onClick={this.onClickEdit}/>
-        <ButtonComponent text="delete" data={this.props.data} onClick={this.onClickDelete} />
-        </div>
+        return <input/>
     }
 
     /**
@@ -172,4 +154,4 @@ class ActionColumn extends Base {
     // componentWillUnmount() {}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ActionColumn));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Example));

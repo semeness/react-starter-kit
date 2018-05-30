@@ -10,6 +10,7 @@ export default function Router() {
             <Route exact path="/:module/:page/:type/:id" component={App} />
             <Route exact path="/:module/:page/:type" component={App} />
             <Route exact path="/:module/:page" component={App} />
+            <Route exact path="/user-page/:id/edit" component={App}/>
             <Route exact path="/user-page" component={UserPageContainer} />
             <Route exact path="/:module" component={App} />
             <Route component={App} />

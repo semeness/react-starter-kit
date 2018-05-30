@@ -3,7 +3,7 @@ const userListConst = {
     dataFailed: 'User Data Failed To Load',
     dataInProcess: 'User Data Loading',
     deletingUser: 'Deleting Exicting User',
-    creatingUser: 'Creating Exicting User',
+    editingUser: 'Editing Exicting User',
 
 };
 
@@ -46,10 +46,21 @@ function deleteUser (id) {
     };
 }
 
+function editUser (id) {
+    return {
+        payload: {
+            id,
+        },
+        type: userListConst.editingUser,
+    };
+}
+
+
 
 export {
   userListConst,
   getUserList,
+    editUser,
   deleteUser,
   exampleActionSimple,
 };

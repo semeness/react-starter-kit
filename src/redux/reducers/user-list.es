@@ -35,10 +35,18 @@ export default (state = initialState, {type, payload}) => {
             };
 
         case userListConst.deletingUser:
-            console.log(state.data);
-            return {...state,
-                data: this.data.filter((item)=>item.id!=payload.id),
+            const newUserData = {...state.data};
+            delete newUserData[payload.id];
+            return {
+                ...state,
+                data: {...newUserData},
+                list: state.list.filter((item)=>item !== payload.id),
             };
+
+        case userListConst.editingUser:
+            return (
+                state.data[payload.id].name
+            );
 
         default:
             return state;
