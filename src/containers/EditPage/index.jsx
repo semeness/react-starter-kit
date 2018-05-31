@@ -4,8 +4,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
-import {exampleActionListGet, exampleActionSimple} from 'redux/actions/example';
-import {exampleSelectorListGet} from 'redux/selectors/example';
+import {editUser} from 'redux/actions/user-list';
+import {getUserDataListSelector} from 'redux/selectors/user-list';
 import ExampleComponent from 'components/Example/index';
 
 /**
@@ -16,7 +16,7 @@ import ExampleComponent from 'components/Example/index';
  */
 function mapStateToProps(state/*, props*/) {
     return {
-        exampleList: exampleSelectorListGet(state),
+        userList: getUserDataListSelector(state),
     };
 }
 
@@ -28,8 +28,7 @@ function mapStateToProps(state/*, props*/) {
  */
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        exampleActionSimple,
-        exampleActionListGet,
+        editUser,
     }, dispatch);
 }
 
@@ -99,7 +98,6 @@ class EditPageContainer extends Base {
      * Так же, таймауты, ajax-запросы и взаимодействие с другими библиотеками стоит обрабатывать здесь.
      */
     componentDidMount() {
-        this.props.exampleActionListGet();
     }
 
     /**
@@ -136,8 +134,12 @@ class EditPageContainer extends Base {
      * Отображение компонента
      */
     render() {
-        return <input/>
+        const {userList} = this.props;
+        console.log(userList);
+        console.log(this.props.userList[1].name);
+        return <input type="text" defaultValue={this.props.userList[1].name}/>
     }
+
 
     /**
      * Вызывается сразу после render.
@@ -154,4 +156,4 @@ class EditPageContainer extends Base {
     // componentWillUnmount() {}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Example));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditPageContainer));
