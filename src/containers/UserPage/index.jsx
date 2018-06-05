@@ -61,6 +61,9 @@ class UserPageContainer extends Base {
     renderRow = (user) => {
         return <tr key={user.id}>
             {this.renderName(user)}
+            {this.renderSurName(user)}
+            {this.renderAge(user)}
+            {this.renderGender(user)}
             {this.renderActionColumn(user)}
         </tr>;
     };
@@ -140,6 +143,13 @@ class UserPageContainer extends Base {
         return (
             <table style={{border: '2px solid black'}}>
                 <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>Surname</td>
+                    <td>Age</td>
+                    <td>Gender</td>
+                    <td>Edit</td>
+                </tr>
                 {userList.map(this.renderRow)}
                 </tbody>
             </table>
@@ -152,12 +162,30 @@ class UserPageContainer extends Base {
      * Так же, таймауты, ajax-запросы и взаимодействие с другими библиотеками стоит обрабатывать здесь.
      */
     componentDidMount() {
-        this.props.getUserList();
+        // this.props.getUserList();
     }
 
     renderName(user) {
         return (
             <td>{user.name}</td>
+        );
+    }
+
+    renderSurName(user) {
+        return (
+            <td>{user.surname}</td>
+        );
+    }
+
+    renderAge(user) {
+        return (
+            <td>{user.age}</td>
+        );
+    }
+
+    renderGender(user) {
+        return (
+            <td>{user.gender}</td>
         );
     }
 

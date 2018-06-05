@@ -2,11 +2,12 @@ import Base from 'containers/Base/index';
 import React from 'react';
 // import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {editUser} from 'redux/actions/user-list';
-import {getUserDataListSelector} from 'redux/selectors/user-list';
-import ExampleComponent from 'components/Example/index';
+import {getOneUserSelector} from 'redux/selectors/oneUser';
+import ButtonComponent from 'components/Button/index';
+
 
 /**
  * Привязка props к store
@@ -14,9 +15,9 @@ import ExampleComponent from 'components/Example/index';
  * @param state
  * @return {{prop}}
  */
-function mapStateToProps(state/*, props*/) {
+function mapStateToProps(state, props) {
     return {
-        userList: getUserDataListSelector(state),
+        oneUser: getOneUserSelector(state, props.match.params.id),
     };
 }
 
@@ -82,8 +83,18 @@ class EditPageContainer extends Base {
         super.initState(props);
         this.state = {
             ...this.state,
+            nameInput: this.props.oneUser.name,
+            surnameInput: this.props.oneUser.surname,
+            ageInput: this.props.oneUser.age,
+
         };
     }
+
+    onClickSumbit = () => {
+        this.props.editUser(this.props.match.params.id, this.state.nameInput, this.state.surnameInput, this.state.ageInput);
+        alert("Are You Sure?");
+        this.props.history.push('/user-page');
+    };
 
     /**
      * Компонент будет примонтирован.
@@ -135,10 +146,48 @@ class EditPageContainer extends Base {
      */
     render() {
         const {userList} = this.props;
-        console.log(userList);
-        console.log(this.props.userList[1].name);
-        return <input type="text" defaultValue={this.props.userList[1].name}/>
+        return (
+            <div>
+                <span>Name</span>
+                <input type="text" value={this.state.nameInput} onChange={this.handleNameChange}/>
+
+                <span>Surname</span>
+                <input type="text" value={this.state.surnameInput} onChange={this.handleSurnameChange}/>
+
+                <span>Age</span>
+                <input type="text" value={this.state.ageInput} onChange={this.handleAgeChange}/>
+
+                <span>Gender</span>
+                <div>
+                    <input type="radio" name="gender" value="male" id="Male"/>
+                    <label htmlFor="Male">Male</label>
+
+                    <input type="radio" name="gender" value="female" id="Female"/>
+                    <label htmlFor="Female">Female</label>
+                </div>
+
+                <ButtonComponent text="sumbit" data={userList} onClick={this.onClickSumbit}/>
+            </div>
+        );
     }
+
+    handleNameChange = (e) => {
+        this.setState({
+            nameInput: e.target.value,
+        });
+    };
+
+    handleSurnameChange = (e) => {
+        this.setState({
+            surnameInput: e.target.value,
+        });
+    };
+
+    handleAgeChange = (e) => {
+        this.setState({
+            ageInput: e.target.value,
+        });
+    };
 
 
     /**

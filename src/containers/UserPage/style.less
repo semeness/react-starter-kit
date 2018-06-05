@@ -7,3 +7,13 @@ td {
     padding: 8px;
     border: 1px solid lightgray;
 }
+
+tr {
+    &:first-child {
+        color: black;
+        font-weight: bold;
+        & td {
+            border: 2px solid black;
+        }
+    }
+}

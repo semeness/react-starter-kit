@@ -44,9 +44,18 @@ export default (state = initialState, {type, payload}) => {
             };
 
         case userListConst.editingUser:
-            return (
-                state.data[payload.id].name
-            );
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    [payload.id]: {
+                        ...state.data[payload.id],
+                        name: payload.newName,
+                        surname: payload.newSurname,
+                        age: payload.age,
+                    },
+                },
+            };
 
         default:
             return state;

@@ -46,10 +46,13 @@ function deleteUser (id) {
     };
 }
 
-function editUser (id) {
+function editUser (id, newName, newSurname, age) {
     return {
         payload: {
-            id,
+            id: id,
+            newName: newName,
+            newSurname: newSurname,
+            age: age,
         },
         type: userListConst.editingUser,
     };
