@@ -64,6 +64,8 @@ class UserPageContainer extends Base {
             {this.renderSurName(user)}
             {this.renderAge(user)}
             {this.renderGender(user)}
+            {this.renderActivity(user)}
+            {this.renderEducation(user)}
             {this.renderActionColumn(user)}
         </tr>;
     };
@@ -148,6 +150,8 @@ class UserPageContainer extends Base {
                     <td>Surname</td>
                     <td>Age</td>
                     <td>Gender</td>
+                    <td>IsActive</td>
+                    <td>Education</td>
                     <td>Edit</td>
                 </tr>
                 {userList.map(this.renderRow)}
@@ -187,6 +191,46 @@ class UserPageContainer extends Base {
         return (
             <td>{user.gender}</td>
         );
+    }
+
+    renderActivity(user) {
+        if (user.isActive)
+            return(
+                <td>Active</td>
+            );
+        else
+            return(
+                <td>Died</td>
+            );
+    }
+
+    renderEducation(user) {
+        switch (user.education){
+            case 0:
+                return(
+                    <td>Stupid</td>
+                );
+
+            case 1:
+                return(
+                    <td>Can smth</td>
+                );
+
+            case 2:
+                return(
+                    <td>Can smth special</td>
+                );
+
+            case 3:
+                return(
+                    <td>Very Good</td>
+                );
+
+            case 4:
+                return(
+                    <td>Genious</td>
+                );
+        }
     }
 
     renderActionColumn(user) {

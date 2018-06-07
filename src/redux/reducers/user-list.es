@@ -53,6 +53,9 @@ export default (state = initialState, {type, payload}) => {
                         name: payload.newName,
                         surname: payload.newSurname,
                         age: payload.age,
+                        gender: payload.gender,
+                        isActive: payload.activity,
+                        education: payload.education,
                     },
                 },
             };

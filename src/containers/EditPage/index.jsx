@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 import {editUser} from 'redux/actions/user-list';
 import {getOneUserSelector} from 'redux/selectors/oneUser';
 import ButtonComponent from 'components/Button/index';
+import style from './style.less';
 
 
 /**
@@ -83,15 +84,28 @@ class EditPageContainer extends Base {
         super.initState(props);
         this.state = {
             ...this.state,
-            nameInput: this.props.oneUser.name,
-            surnameInput: this.props.oneUser.surname,
-            ageInput: this.props.oneUser.age,
+            name: this.props.oneUser.name,
+            surname: this.props.oneUser.surname,
+            age: this.props.oneUser.age,
+            gender:this.props.oneUser.gender,
+            activity:this.props.oneUser.isActive,
+            education:this.props.oneUser.education,
 
         };
     }
 
     onClickSumbit = () => {
-        this.props.editUser(this.props.match.params.id, this.state.nameInput, this.state.surnameInput, this.state.ageInput);
+        const {name, surname, age, gender, activity, education} = this.state;
+        const user = {
+            id:this.props.match.params.id,
+            name,
+            surname,
+            age,
+            gender,
+            activity,
+            education
+        };
+        this.props.editUser(user);
         alert("Are You Sure?");
         this.props.history.push('/user-page');
     };
@@ -147,47 +161,106 @@ class EditPageContainer extends Base {
     render() {
         const {userList} = this.props;
         return (
-            <div>
-                <span>Name</span>
-                <input type="text" value={this.state.nameInput} onChange={this.handleNameChange}/>
+            <div className="editPageContainer">
 
-                <span>Surname</span>
-                <input type="text" value={this.state.surnameInput} onChange={this.handleSurnameChange}/>
-
-                <span>Age</span>
-                <input type="text" value={this.state.ageInput} onChange={this.handleAgeChange}/>
-
-                <span>Gender</span>
                 <div>
-                    <input type="radio" name="gender" value="male" id="Male"/>
-                    <label htmlFor="Male">Male</label>
-
-                    <input type="radio" name="gender" value="female" id="Female"/>
-                    <label htmlFor="Female">Female</label>
+                    <span>Name</span>
+                    <input name="name" type="text" value={this.state.name} onChange={this.handleFieldChange}/>
                 </div>
 
-                <ButtonComponent text="sumbit" data={userList} onClick={this.onClickSumbit}/>
+                <div>
+                    <span>Surname</span>
+                    <input name="surname" type="text" value={this.state.surname} onChange={this.handleFieldChange}/>
+                </div>
+
+                <div>
+                    <span>Age</span>
+                    <input name="age" type="text" value={this.state.age} onChange={this.handleFieldChange}/>
+                </div>
+
+                <div>
+                    <span>Gender</span>
+                    {this.renderRadioButtons()}
+                </div>
+
+                <div>
+                    <span>Activity</span>
+                    {this.renderCheckBox()}
+                </div>
+
+                <div>
+                    <span>Education</span>
+                    {this.renderSelect()}
+                </div>
+
+                <div>
+                <ButtonComponent text="sumbit" onClick={this.onClickSumbit}/>
+                </div>
+            </div>
+        );
+
+    }
+
+    handleFieldChange = (e) => {
+        const {name, value} = e.target;
+        this.setState({
+            [name]: value,
+        })
+    };
+
+
+    handleGenderChange = (e) => {
+        const rbValue = e.target.value;
+        this.setState({
+            gender: rbValue,
+        });
+    };
+
+    handleActivityChange = (e) => {
+        this.setState({
+            activity: e.target.checked,
+        });
+    };
+
+    handleEducationChange = (e) => {
+        this.setState({
+            education: e.target.selectedIndex,
+        });
+    }
+
+    renderRadioButtons() {
+        const {gender} = this.state;
+
+        return(
+            <div>
+                <input type="radio" name="gender" value="male" id="Male" checked={gender === "male"} onChange={this.handleGenderChange} />
+                <label htmlFor="Male">Male</label>
+
+                <input type="radio" name="gender" value="female" id="Female" checked={gender === "female"} onChange={this.handleGenderChange}/>
+                <label htmlFor="Female">Female</label>
             </div>
         );
     }
 
-    handleNameChange = (e) => {
-        this.setState({
-            nameInput: e.target.value,
-        });
-    };
+    renderCheckBox() {
+        const {activity} = this.state;
+            return(
+                <input type="checkbox" checked={activity} onChange={this.handleActivityChange}/>
+            );
+    }
 
-    handleSurnameChange = (e) => {
-        this.setState({
-            surnameInput: e.target.value,
-        });
-    };
-
-    handleAgeChange = (e) => {
-        this.setState({
-            ageInput: e.target.value,
-        });
-    };
+    renderSelect() {
+        const {education} = this.state;
+            return(
+                <select defaultValue={education} onChange={this.handleEducationChange}>
+                    <option value="0">Stupid</option>
+                    <option value="1">Can smth</option>
+                    <option value="2">Can smth cpecial</option>
+                    <option value="3">Very good</option>
+                    <option value="4">Genious</option>
+                </select>
+            );
+    }
 
 
     /**

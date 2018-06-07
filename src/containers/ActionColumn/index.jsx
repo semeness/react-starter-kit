@@ -152,8 +152,8 @@ class ActionColumn extends Base {
      */
     render() {
         return <div>
-        <ButtonComponent text="edit" data={this.props.data} onClick={this.onClickEdit}/>
-        <ButtonComponent text="delete" data={this.props.data} onClick={this.onClickDelete} />
+        <ButtonComponent text="edit" onClick={this.onClickEdit}/>
+        <ButtonComponent text="delete" onClick={this.onClickDelete} />
         </div>
     }
 

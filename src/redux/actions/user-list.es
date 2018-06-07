@@ -46,13 +46,18 @@ function deleteUser (id) {
     };
 }
 
-function editUser (id, newName, newSurname, age) {
+function editUser (user) {
+
+    const {id, name, surname, age, gender, activity, education} = user;
     return {
         payload: {
             id: id,
-            newName: newName,
-            newSurname: newSurname,
+            newName: name,
+            newSurname: surname,
             age: age,
+            gender: gender,
+            activity: activity,
+            education: education,
         },
         type: userListConst.editingUser,
     };
