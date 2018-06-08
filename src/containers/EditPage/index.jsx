@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 import {editUser} from 'redux/actions/user-list';
 import {getOneUserSelector} from 'redux/selectors/oneUser';
 import ButtonComponent from 'components/Button/index';
+import RadioButtonGender from 'components/RadioButton/index';
 import style from './style.less';
 
 
@@ -159,28 +160,28 @@ class EditPageContainer extends Base {
      * Отображение компонента
      */
     render() {
-        const {userList} = this.props;
+        const {name, surname, age, gender} = this.state;
         return (
             <div className="editPageContainer">
 
                 <div>
                     <span>Name</span>
-                    <input name="name" type="text" value={this.state.name} onChange={this.handleFieldChange}/>
+                    <input name="name" type="text" value={name} onChange={this.handleFieldChange}/>
                 </div>
 
                 <div>
                     <span>Surname</span>
-                    <input name="surname" type="text" value={this.state.surname} onChange={this.handleFieldChange}/>
+                    <input name="surname" type="text" value={surname} onChange={this.handleFieldChange}/>
                 </div>
 
                 <div>
                     <span>Age</span>
-                    <input name="age" type="text" value={this.state.age} onChange={this.handleFieldChange}/>
+                    <input name="age" type="text" value={age} onChange={this.handleFieldChange}/>
                 </div>
 
                 <div>
                     <span>Gender</span>
-                    {this.renderRadioButtons()}
+                    <RadioButtonGender info={this.genderEditInfo} gender={gender} handler={this.handleGenderChange}/>
                 </div>
 
                 <div>
@@ -228,19 +229,19 @@ class EditPageContainer extends Base {
         });
     }
 
-    renderRadioButtons() {
-        const {gender} = this.state;
 
-        return(
-            <div>
-                <input type="radio" name="gender" value="male" id="Male" checked={gender === "male"} onChange={this.handleGenderChange} />
-                <label htmlFor="Male">Male</label>
-
-                <input type="radio" name="gender" value="female" id="Female" checked={gender === "female"} onChange={this.handleGenderChange}/>
-                <label htmlFor="Female">Female</label>
-            </div>
-        );
-    }
+    genderEditInfo = [
+        {
+            id: "Male",
+            value: "male",
+            name: "gender",
+        },
+        {
+          id: "Female",
+          value: "female",
+          name: 'gender',
+        },
+    ];
 
     renderCheckBox() {
         const {activity} = this.state;
@@ -261,6 +262,7 @@ class EditPageContainer extends Base {
                 </select>
             );
     }
+
 
 
     /**
